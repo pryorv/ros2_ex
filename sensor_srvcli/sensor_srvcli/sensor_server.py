@@ -3,7 +3,6 @@ import rclpy
 from rclpy.node import Node
 import socket
 import numpy as np
-from threading import Thread
 
 
 class SensorServer(Node):
@@ -52,18 +51,17 @@ def main():
     executor.add_node(sensor_server_0)
     executor.add_node(sensor_server_1)
 
-    executor_thread = Thread(target=executor.spin, daemon=True)
-    executor_thread.start()
-    rate_0 = sensor_server_0.create_rate(server_rate_0)
-    rate_1 = sensor_server_1.create_rate(server_rate_1)
+    try:
+        print("")
+        sensor_server_0.get_logger().info('Beginning demo, end with CTRL-C')
+        executor.spin()
+    except KeyboardInterrupt:
+        sensor_server_0.get_logger().info('KeyboardInterrupt, shutting down.\n')
 
-    while rclpy.ok():
-        # print('Help me body, you are my only hope')
-        rate_0.sleep()
-
-
+    sensor_server_0.destroy_node()
+    sensor_server_1.destroy_node()
     rclpy.shutdown()
-    executor_thread.join()
+    executor.join()
 
 
 if __name__ == '__main__':
