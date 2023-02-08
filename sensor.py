@@ -2,15 +2,10 @@
 """
 
 #!/usr/bin/env python3
-from array import array
-from logging import exception
 import socket
 import random
-from sqlite3 import connect
-import sys
-from tokenize import Double
 import numpy as np
-from threading import Thread, Timer
+from threading import Thread
 import time
 
 class Sensor(Thread):  
@@ -105,15 +100,14 @@ def main(args=None):
     t1 = Thread(target = sensor1.run)
     t1.daemon = True
 
-    ## you can also launch a second sensor
-    # sensor2 = Sensor('127.0.0.1', 10000, 4000, 0.003) # Define a sensor with 4000Hz sampling rate and 3ms delay
-    # t2 = Thread(target = sensor2.run)    
-    # t2.daemon = True
+    sensor2 = Sensor('127.0.0.1', 10000, 2000, 0.001)
+    t2 = Thread(target = sensor2.run)
+    t2.daemon = True
 
 
 
     t1.start()
-    # t2.start()
+    t2.start()
     
     while True:
         pass
