@@ -13,8 +13,8 @@ class SensorClientAsync(Node):
         client_cb_group = MutuallyExclusiveCallbackGroup()
         timer_cb_group = MutuallyExclusiveCallbackGroup()
 
-        self.num_samples0 = 5  # Number of samples to request from service server 0
-        self.num_samples1 = 5  # Number of samples to request from service server 1
+        self.num_samples_0 = 5  # Number of samples to request from service server 0
+        self.num_samples_1 = 5  # Number of samples to request from service server 1
 
         self.cli_0 = self.create_client(ReadSensor, 'read_sensor_0', callback_group=client_cb_group)
         self.cli_1 = self.create_client(ReadSensor, 'read_sensor_1', callback_group=client_cb_group)
@@ -94,7 +94,6 @@ def main(args=None):
         rclpy.spin(sensor_client)
     except KeyboardInterrupt:
         sensor_client.get_logger().info('KeyboardInterrupt, shutting down.\n')
-    rclpy.spin(sensor_client)
 
     sensor_client.destroy_node()
     rclpy.shutdown()
